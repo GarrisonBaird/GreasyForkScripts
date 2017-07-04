@@ -1,15 +1,19 @@
 // ==UserScript==
 // @name        Twitter t.co GO TO HELL
 // @description Restore t.co links, support Twitter web/mobile/tweetdeck
+// @icon        https://abs.twimg.com/favicons/favicon.ico
 // @include     twitter.com
 // @match       *://*.twitter.com/*
-// @version     1.0
+// @version     1.1
 // @grant       none
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // ==/UserScript==
+// @updateURL   https://greasyfork.org/scripts/28506-twitter-t-co-go-to-hell/code/Twitter%20tco%20GO%20TO%20HELL.user.js
+// @updateURL   https://github.com/GarrisonBaird/GreasyForkScripts/raw/master/Twitter%20t.co%20GO%20TO%20HELL.user.js
 
 
 function main () {
+	//document.querySelectorAll('a[href*="t.co"]').forEach(function (el) { // experimental forEach api in latest browsers
 	Array.prototype.slice.call(window.document.querySelectorAll('a[href*="t.co"]'), 0) .forEach(function (el) {
 		if (el.dataset && el.dataset.expandedUrl) { // Twitter web
 			el.href = el.dataset.expandedUrl;
@@ -28,8 +32,11 @@ function main () {
 };
 
 main();
+window.addEventListener('load', main);
+
 if (window.location.host == 'tweetdeck.twitter.com') { // TweetDeck won't trigger 'scroll' event
   setInterval(main, 1000);
 } else {
   window.addEventListener('scroll', main);
+  setInterval(main, 10000); // fallback
 }

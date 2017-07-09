@@ -4,19 +4,34 @@
 // @icon        https://en.wikipedia.org/static/favicon/wikipedia.ico
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // @include     *://*.wiki*.org/*
-// @version     1.0
+// @version     1.1
 // @grant       none
 // ==/UserScript==
 
 function expand(){
-  Array.prototype.slice.call(window.document.querySelectorAll("table[id^='collapsibleTable']"), 0).forEach(function(el){
-  	Array.prototype.slice.call(el.querySelectorAll("tr[style*='display: none;']"), 0).forEach(function(el){
-  		el.style.display = "table-row";
+  Array.prototype.slice.call(window.document.querySelectorAll('table[id^="collapsibleTable"]'), 0).forEach(function(el){
+  	Array.prototype.slice.call(el.querySelectorAll('tr[style*="display: none;"]'), 0).forEach(function(el){
+  		//el.style.display = 'table-row';
   	});
+    if (el.querySelectorAll('tr[style*="display: none;"]').length > 0){
+      el.querySelector('a[id*="collapseButton"]').click();
+    }
   });
 }
 
-window.addEventListener("load", function(){
+function removeAutocollapse(){
+  Array.prototype.slice.call(window.document.querySelectorAll('table[class*="autocollapse"]'), 0).forEach(function(el){
+  	el.classList.remove('autocollapse');
+  });
+  Array.prototype.slice.call(window.document.querySelectorAll('table[class*="collapsed"]'), 0).forEach(function(el){
+  	el.classList.remove('collapsed');
+  });
+}
+
+window.addEventListener('load', function(){
   setTimeout(expand, 500); 
 });
 
+window.document.addEventListener('DOMContentLoaded', function(){
+  removeAutocollapse();
+});

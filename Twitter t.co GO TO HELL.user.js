@@ -29,7 +29,7 @@ function main () {
 			el.href = href;
 		}
 	});
-};
+}
 
 main();
 window.addEventListener('load', main);

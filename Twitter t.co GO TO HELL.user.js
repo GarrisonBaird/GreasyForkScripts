@@ -32,11 +32,14 @@ function main () {
 }
 
 main();
-window.addEventListener('load', main);
+window.listener_t_co = false
 
-if (window.location.host == 'tweetdeck.twitter.com') { // TweetDeck won't trigger 'scroll' event
-  setInterval(main, 1000);
-} else {
-  window.addEventListener('scroll', main);
-  setInterval(main, 10000); // fallback
+if (window.listener_t_co == false) {
+    if (window.location.host == 'tweetdeck.twitter.com') { // TweetDeck won't trigger 'scroll' event
+        setInterval(main, 1000);
+    } else {
+        window.addEventListener('scroll', main);
+        setInterval(main, 10000); // fallback
+    }
+   window.listener_t_co = true
 }

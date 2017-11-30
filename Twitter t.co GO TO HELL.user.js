@@ -4,7 +4,7 @@
 // @icon        https://abs.twimg.com/favicons/favicon.ico
 // @include     twitter.com
 // @match       *://*.twitter.com/*
-// @version     1.1
+// @version     1.2
 // @grant       none
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // ==/UserScript==
@@ -39,7 +39,7 @@ if (window.listener_t_co == false) {
         setInterval(main, 1000);
     } else {
         window.addEventListener('scroll', main);
-        setInterval(main, 10000); // fallback
+        setInterval(main, 5000); // fallback
     }
    window.listener_t_co = true
 }

@@ -1,12 +1,14 @@
 // ==UserScript==
 // @name        Twitter t.co GO TO HELL
-// @description Restore t.co links, support Twitter web/mobile/tweetdeck
+// @description Restore t.co links, support Twitter/TweetDeck
 // @icon        https://abs.twimg.com/favicons/favicon.ico
 // @include     twitter.com
 // @match       *://*.twitter.com/*
-// @version     1.2
+// @exclude     *://twitter.com/i/cards/*
+// @version     1.3
 // @grant       none
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
+// @run-at      document-end
 // ==/UserScript==
 // @updateURL   https://greasyfork.org/scripts/28506-twitter-t-co-go-to-hell/code/Twitter%20tco%20GO%20TO%20HELL.user.js
 // @updateURL   https://github.com/GarrisonBaird/GreasyForkScripts/raw/master/Twitter%20t.co%20GO%20TO%20HELL.user.js
@@ -16,30 +18,49 @@ function main () {
 	//document.querySelectorAll('a[href*="t.co"]').forEach(function (el) { // experimental forEach api in latest browsers
 	Array.prototype.slice.call(window.document.querySelectorAll('a[href*="t.co"]'), 0) .forEach(function (el) {
 		if (el.dataset && el.dataset.expandedUrl) { // Twitter web
-			el.href = el.dataset.expandedUrl;
+			el.href = removeTracker(el.dataset.expandedUrl);
 		}
 		if (el.dataset && el.dataset.fullUrl) { // TweetDeck
-			el.href = el.dataset.fullUrl;
+			el.href = removeTracker(el.dataset.fullUrl);
 		}
 		if (el.children.length > 0 && el.children[0].tagName == "SPAN" && el.children[0].innerText.startsWith("(link: ")) {
+            // Update 2018-11-05: doesn't work with latest Twitter mobile :(
 			// Fucking Twitter mobile (https://mobile.twitter.com/)
 			// el.children[0].innerText == "(link: https://www.google.com/) "
 			var href = el.children[0].innerText.trim();
 			href = href.substring("(link: ".length, href.length - ")".length);
-			el.href = href;
+			el.href = removeTracker(href);
 		}
 	});
 }
+function removeTracker (url) {
+    // utm_*
+    url = url.replace(new RegExp('[\?|&]utm_[^&#]+', "gi"), "")
+    return url
+}
 
 main();
-window.listener_t_co = false
 
-if (window.listener_t_co == false) {
+if (MutationObserver) {
+    console.log("Twitter t.co GO TO HELL: Using MutationObserver");
+    var observer = new MutationObserver(function(mutationsList, observer){
+        main();
+    });
+    observer.observe(document.body, {
+        attributes: false,
+        characterData: false,
+        childList: true,
+        subtree: false,
+        attributeOldValue: false,
+        characterDataOldValue: false
+    });
+} else {
     if (window.location.host == 'tweetdeck.twitter.com') { // TweetDeck won't trigger 'scroll' event
+        console.log("Twitter t.co GO TO HELL: Using setInterval");
         setInterval(main, 1000);
     } else {
+        console.log("Twitter t.co GO TO HELL: Using addEventListener 'scroll' and setInterval");
         window.addEventListener('scroll', main);
         setInterval(main, 5000); // fallback
     }
-   window.listener_t_co = true
 }

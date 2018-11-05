@@ -5,14 +5,17 @@
 // @include     twitter.com
 // @match       *://*.twitter.com/*
 // @exclude     *://twitter.com/i/cards/*
-// @version     1.3.1
-// @grant       none
+// @version     1.4
+// @grant       GM_addStyle
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // @run-at      document-end
 // ==/UserScript==
 // @updateURL   https://greasyfork.org/scripts/28506-twitter-t-co-go-to-hell/code/Twitter%20tco%20GO%20TO%20HELL.user.js
 // @updateURL   https://github.com/GarrisonBaird/GreasyForkScripts/raw/master/Twitter%20t.co%20GO%20TO%20HELL.user.js
 
+GM_addStyle(`.js-tweet-text-container a.u-hidden {
+	display: inherit !important;
+}`)
 
 function main () {
 	document.querySelectorAll('a[href*="t.co"]').forEach(function (el) {

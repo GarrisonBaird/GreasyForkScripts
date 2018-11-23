@@ -5,7 +5,7 @@
 // @include     twitter.com
 // @match       *://*.twitter.com/*
 // @exclude     *://twitter.com/i/cards/*
-// @version     1.4
+// @version     1.4.1
 // @grant       GM_addStyle
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // @run-at      document-end
@@ -57,7 +57,8 @@ if (MutationObserver) {
 		attributeOldValue: false,
 		characterDataOldValue: false
 	});
-} else {
+} 
+if (true) {
 	if (window.location.host == 'tweetdeck.twitter.com') { // TweetDeck won't trigger 'scroll' event
 		console.log("Twitter t.co GO TO HELL: Using setInterval");
 		setInterval(main, 1000);

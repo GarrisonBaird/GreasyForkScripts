@@ -5,7 +5,7 @@
 // @include     twitter.com
 // @match       *://*.twitter.com/*
 // @exclude     *://twitter.com/i/cards/*
-// @version     1.0
+// @version     1.0.1
 // @grant       none
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // @run-at      document-end

@@ -5,7 +5,7 @@
 // @include     twitter.com
 // @match       *://*.twitter.com/*
 // @exclude     *://twitter.com/i/cards/*
-// @version     1.5
+// @version     1.5.1
 // @grant       GM_addStyle
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // @run-at      document-end
@@ -29,12 +29,13 @@ function main () {
 			el.href = removeTracker(el.title);
 		}
 		if (el.children.length > 0 && el.children[0].tagName == "SPAN" && el.children[0].innerText.startsWith("(link: ")) {
-			// Update 2018-11-05: doesn't work with latest Twitter mobile :(
-			// Fucking Twitter mobile (https://mobile.twitter.com/)
 			// el.children[0].innerText == "(link: https://www.google.com/) "
 			var href = el.children[0].innerText.trim();
 			href = href.substring("(link: ".length, href.length - ")".length);
 			el.href = removeTracker(href);
+		}
+		if (el.href.startsWith("https://t.co/")) { // if real url is not found, remove ?amp=1 at the ending
+			el.href = el.href.replace(/\?amp=1$/, "");
 		}
 	});
 }

@@ -5,7 +5,7 @@
 // @include     twitter.com
 // @match       *://*.twitter.com/*
 // @exclude     *://twitter.com/i/cards/*
-// @version     1.4.1
+// @version     1.5
 // @grant       GM_addStyle
 // @namespace   https://greasyfork.org/users/113252-garrison-baird
 // @run-at      document-end
@@ -24,6 +24,9 @@ function main () {
 		}
 		if (el.dataset && el.dataset.fullUrl) { // TweetDeck
 			el.href = removeTracker(el.dataset.fullUrl);
+		}
+		if (el.title && el.title.match(/^https?:\/\//i)) { // New unified Twitter UI, including mobile.twitter.com
+			el.href = removeTracker(el.title);
 		}
 		if (el.children.length > 0 && el.children[0].tagName == "SPAN" && el.children[0].innerText.startsWith("(link: ")) {
 			// Update 2018-11-05: doesn't work with latest Twitter mobile :(
